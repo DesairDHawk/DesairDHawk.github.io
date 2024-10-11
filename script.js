@@ -1,6 +1,9 @@
-const clientId = 'YOUR_CLIENT_ID'; // Замените на ваш ID приложения
+const clientId = '790005'; // Замените на ваш ID приложения
 const redirectUri = 'YOUR_REDIRECT_URI/receiver.html'; // Убедитесь, что он указывает на receiver.html
 const scope = 'mail';
+
+// Приватный ключ:bfa22f24f576bf1f295aae84a6486ff0
+// Секретный ключ:73fcb6019ea28c1e3bb0970a102c5a18
 
 document.getElementById('loginButton').onclick = () => {
     const authUrl = `https://oauth.mail.ru/login?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
