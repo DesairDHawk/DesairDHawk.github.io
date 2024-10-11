@@ -1,36 +1,10 @@
-mailru.loader.require('api', function() {
-    // Инициализация приложения Mail.ru
-    mailru.connect.init({
-        api_id: '790005', // Замените на ваш ID приложения
-        domain: 'https://desairdhawk.github.io'
-    });
-
-    // Обработка кнопки входа
-    document.getElementById('loginButton').onclick = () => {
-        console.log("Кнопка нажата"); // Проверка клика
-        // Открываем окно авторизации
-        mailru.connect.login(function(session) {
-            if (session.is_app_user) {
-                // Если успешная авторизация, получаем данные пользователя
-                console.log("Пользователь авторизован");
-                getUserInfo();
-            } else {
-                console.error('Пользователь не авторизован в приложении.');
-            }
-        });
-    };
-
-    // Функция для получения информации о пользователе
-    function getUserInfo() {
-        mailru.common.users.getInfo(function(result) {
-            console.log('Информация о пользователе:', result[0]);
-            displayUserInfo(result[0]);
-        });
+document.getElementById('loginButton').onclick = () => {
+    console.log("Кнопка нажата"); // Проверка клика
+    
+    // Явно открываем окно авторизации в основном потоке
+    let loginWindow = window.open(`https://oauth.mail.ru/login?client_id=YOUR_API_ID&response_type=token&redirect_uri=${encodeURIComponent('https://desairdhawk.github.io/receiver.html')}&scope=mail`, 'Mail.ru OAuth', 'width=600,height=400');
+    
+    if (!loginWindow || loginWindow.closed || typeof loginWindow.closed === 'undefined') { 
+        alert("Окно авторизации было заблокировано браузером. Разрешите всплывающие окна.");
     }
-
-    // Функция для отображения информации о пользователе
-    function displayUserInfo(userInfo) {
-        const mailsDiv = document.getElementById('mails');
-        mailsDiv.innerHTML = `<p>Имя пользователя: ${userInfo.first_name} ${userInfo.last_name}</p>`;
-    }
-});
+};
