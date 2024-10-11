@@ -1,5 +1,5 @@
 const clientId = '790005'; // Замените на ваш ID приложения
-const redirectUri = 'YOUR_REDIRECT_URI/receiver.html'; // Убедитесь, что он указывает на receiver.html
+const redirectUri = 'https://desairdhawk.github.io/receiver.html'; // Убедитесь, что он указывает на receiver.html
 const scope = 'mail';
 
 // Приватный ключ:bfa22f24f576bf1f295aae84a6486ff0
