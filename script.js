@@ -1,7 +1,7 @@
 mailru.loader.require('api', function() {
     // Инициализация приложения Mail.ru
     mailru.connect.init({
-        api_id: 'YOUR_API_ID', // Замените на ваш ID приложения
+        api_id: '790005', // Замените на ваш ID приложения
         domain: 'https://desairdhawk.github.io'
     });
 
