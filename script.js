@@ -1,44 +1,33 @@
-const clientId = '790005'; // Замените на ваш ID приложения
-const redirectUri = 'https://desairdhawk.github.io/receiver.html'; // Убедитесь, что он указывает на receiver.html
-const scope = 'mail';
+// Инициализация приложения Mail.ru
+mailru.connect.init({
+    // Замените на ваш ID приложения, который вы получили при регистрации в Mail.ru
+    api_id: '790005', 
+    domain: 'https://desairdhawk.github.io'
+});
 
-// Приватный ключ:bfa22f24f576bf1f295aae84a6486ff0
-// Секретный ключ:73fcb6019ea28c1e3bb0970a102c5a18
-
+// Обработка кнопки входа
 document.getElementById('loginButton').onclick = () => {
-    const authUrl = `https://oauth.mail.ru/login?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
-    window.location.href = authUrl;
-};
-
-window.onload = () => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-        getEmails(token);
-    }
-};
-
-const getEmails = async (accessToken) => {
-    const response = await fetch('https://api.mail.ru/mail/message/inbox', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`
+    // Открываем окно авторизации
+    mailru.connect.login(function(session) {
+        if (session.is_app_user) {
+            // Если успешная авторизация, получаем данные пользователя
+            getUserInfo();
+        } else {
+            console.error('Пользователь не авторизован в приложении.');
         }
     });
-
-    if (response.ok) {
-        const data = await response.json();
-        displayEmails(data);
-    } else {
-        console.error('Ошибка при получении писем:', response.status);
-    }
 };
 
-const displayEmails = (data) => {
-    const mailsDiv = document.getElementById('mails');
-    mailsDiv.innerHTML = '';
-    data.messages.forEach(msg => {
-        const emailElement = document.createElement('div');
-        emailElement.textContent = `Тема: ${msg.subject}, От: ${msg.from}`;
-        mailsDiv.appendChild(emailElement);
+// Функция для получения информации о пользователе
+function getUserInfo() {
+    mailru.common.users.getInfo(function(result) {
+        console.log('Информация о пользователе:', result[0]);
+        displayUserInfo(result[0]);
     });
-};
+}
+
+// Функция для отображения информации о пользователе
+function displayUserInfo(userInfo) {
+    const mailsDiv = document.getElementById('mails');
+    mailsDiv.innerHTML = `<p>Имя пользователя: ${userInfo.first_name} ${userInfo.last_name}</p>`;
+}
