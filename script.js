@@ -1,17 +1,18 @@
-// Загрузка библиотеки Mail.ru асинхронно
 mailru.loader.require('api', function() {
     // Инициализация приложения Mail.ru
     mailru.connect.init({
-        api_id: '790005', // Замените на ваш ID приложения
+        api_id: 'YOUR_API_ID', // Замените на ваш ID приложения
         domain: 'https://desairdhawk.github.io'
     });
 
     // Обработка кнопки входа
     document.getElementById('loginButton').onclick = () => {
+        console.log("Кнопка нажата"); // Проверка клика
         // Открываем окно авторизации
         mailru.connect.login(function(session) {
             if (session.is_app_user) {
                 // Если успешная авторизация, получаем данные пользователя
+                console.log("Пользователь авторизован");
                 getUserInfo();
             } else {
                 console.error('Пользователь не авторизован в приложении.');
